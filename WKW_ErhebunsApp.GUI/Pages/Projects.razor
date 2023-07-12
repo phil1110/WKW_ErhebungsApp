@@ -1,0 +1,26 @@
+﻿@page "/projects"
+@using WKW_ErhebunsApp.GUI.Data
+
+<div class="container">
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Project project in DataHandler.projects)
+            {
+                <tr>
+                    <th scope="row">@currentRow++</th>
+                    <td><a href="/project/@project.Name">@project.Name</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    int currentRow = 1;
+}

@@ -1,0 +1,17 @@
+﻿@page "/project/{projectName}"
+@using
+
+<div class="container">
+    <p>@projectName</p>
+</div>
+
+<div class="container fixed-bottom">
+    <a class="btn btn-primary">Neues Lokal hinzufügen</a>
+</div>
+
+@code {
+    [Parameter]
+    public string? projectName { get; set; }
+
+    Project
+}
