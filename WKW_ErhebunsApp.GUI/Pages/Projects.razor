@@ -1,26 +1,57 @@
 ﻿@page "/projects"
 @using WKW_ErhebunsApp.GUI.Data
 
-<div class="container">
-    <table>
+<div class="container h-50 text-center m-auto">
+    <table class="table w-100 m-auto">
         <thead>
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
+                <th scope="col">Löschen</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (Project project in DataHandler.projects)
+            @if(GlobalVars.projects == null || GlobalVars.projects.Count() == 0)
             {
                 <tr>
-                    <th scope="row">@currentRow++</th>
-                    <td><a href="/project/@project.Name">@project.Name</a></td>
+                    <td>@GetRowNumber()</td>
+                    <td><p>Es bestehen keine Projekte</p></td>
                 </tr>
+            }
+            else
+            {
+                @foreach (Project project in GlobalVars.projects)
+                {
+                    <tr class="mt-5">
+                        <td>@GetRowNumber()</td>
+                        <td><a href="/project/@project.Name">@project.Name</a></td>
+                        <td><button class="btn btn-light" @onclick="() => Delete(project.Name)"><span class="oi oi-trash h6"></span></button></td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
 </div>
 
+<div class="container">
+    <a class="btn btn-primary w-50 mx-auto mb-5 mt-auto" href="/projects/create">Neues Projekt anlegen</a>
+</div>
+
 @code {
     int currentRow = 1;
+
+    int GetRowNumber()
+    {
+        int temp = currentRow;
+        currentRow++;
+        return temp;
+    }
+
+    void Delete(string name)
+    {
+        Project temp = GlobalVars.projects.FirstOrDefault(p => p.Name == name);
+        GlobalVars.Remove(temp);
+        currentRow = 1;
+        StateHasChanged();
+    }
 }

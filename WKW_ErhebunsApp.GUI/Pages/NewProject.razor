@@ -1,0 +1,23 @@
+﻿@page "/projects/create"
+@using WKW_ErhebunsApp.GUI.Data
+@inject NavigationManager NavManager
+
+<div class="container w-100">
+	<InputText id="name" @bind-Value="NameValue"></InputText>
+
+	<button type="submit" class="btn btn-primary w-50 mx-auto mb-5 mt-auto" @onclick=AddProject>Projekt anlegen</button>
+</div>
+
+@code {
+	string NameValue { get; set; }
+
+	void AddProject()
+	{
+		Project project = new Project(NameValue);
+		NameValue = "";
+		GlobalVars.projects.Add(project);
+
+		Preferences.Set("projects", Project.ToJson(GlobalVars.projects));
+		NavManager.NavigateTo("/projects");
+	}
+}

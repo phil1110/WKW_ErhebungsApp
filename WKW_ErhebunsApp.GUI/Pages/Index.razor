@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using WKW_ErhebunsApp.GUI.Data
 
 <div class="d-grid gap-5">
     <div class="container text-center m-auto">
@@ -18,7 +19,7 @@
     <div class="container mb-5">
         <div class="row">
             <button type="submit" class="btn btn-primary w-50 mx-auto mb-5 mt-auto" >Hier clicken!</button>
-            <a href="/project/test" class="btn">Link</a>
+            <a href="/projects" class="btn">Link</a>
         </div>
     </div>
 </div>
@@ -28,14 +29,15 @@
     string name;
 
     async void temp()
-    {
+        {
         name = await Application.Current.MainPage.DisplayPromptAsync("Name", "Geben Sie Ihren Namen ein.");
         StateHasChanged();
-    }
+    }*/
 
     protected override async Task OnInitializedAsync()
     {
-        temp();
+        GlobalVars.Initialize();
+
+        await base.OnInitializedAsync();
     }
-    */
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace WKW_ErhebunsApp.GUI.Data
@@ -9,7 +10,7 @@ namespace WKW_ErhebunsApp.GUI.Data
     public class Project
     {
         string _name;
-        private List<Property> _properties;
+        private List<Property> _properties = new List<Property>();
 
         public Project(string name)
         {
@@ -25,14 +26,42 @@ namespace WKW_ErhebunsApp.GUI.Data
             }
         }
 
-        public static List<Project> ReadJson(string json)
+        public List<Property> Properties
         {
-            throw new NotImplementedException();
+            get { return _properties; }
         }
 
-        public string ToJson(List<Project> list)
+        public void AddProperty(Property property)
         {
-            throw new NotImplementedException();
+            _properties.Add(property);
+        }
+
+        public static List<Project> ReadJson(string json)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<List<Project>>(json);
+            }
+            catch
+            {
+                if(json == null)
+                {
+                    return new List<Project>();
+                }
+                else { return null; }
+            }
+        }
+
+        public static string ToJson(List<Project> list)
+        {
+            try
+            {
+                return JsonConvert.SerializeObject(list);
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

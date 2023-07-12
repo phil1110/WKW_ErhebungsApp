@@ -1,17 +1,44 @@
 ﻿@page "/project/{projectName}"
-@using
+@using WKW_ErhebunsApp.GUI.Data
 
 <div class="container">
     <p>@projectName</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Property property in project.Properties)
+            {
+                <tr>
+                    <td>@property.ID</td>
+                    <td><a href="/project/@projectName/@property.ID">@($"{property.StreetName} {property.HouseNumber}/{property.Vl}")</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 
 <div class="container fixed-bottom">
     <a class="btn btn-primary">Neues Lokal hinzufügen</a>
 </div>
 
+
+
 @code {
     [Parameter]
-    public string? projectName { get; set; }
+    public string projectName { get; set; }
 
-    Project
+    Project project;
+
+    protected override async Task OnInitializedAsync()
+    {
+        project = GlobalVars.projects.FirstOrDefault(p => p.Name == projectName);
+        GlobalVars.CurrentProject = project;
+        await base.OnInitializedAsync();
+    }
 }
