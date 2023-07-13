@@ -1,44 +1,90 @@
-﻿@page "/project/{projectName}"
+﻿@page "/project/{projectId}"
 @using WKW_ErhebunsApp.GUI.Data
+@using System.Text
 
-<div class="container">
-    <p>@projectName</p>
-
-    <table>
+<div class="container h-50 text-center m-auto">
+    <table class="table w-100 m-auto">
         <thead>
             <tr>
-                <th scope="col">ID</th>
+                <th scope="col">#</th>
                 <th scope="col">Name</th>
+                <th scope="col">Löschen</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (Property property in project.Properties)
+            @if (project.Properties == null || project.Properties.Count() == 0)
             {
                 <tr>
-                    <td>@property.ID</td>
-                    <td><a href="/project/@projectName/@property.ID">@($"{property.StreetName} {property.HouseNumber}/{property.Vl}")</a></td>
+                    <td>1</td>
+                    <td><p>Es wurden keine Lokale eingetragen</p></td>
+                    <td><p></p></td>
                 </tr>
+            }
+            else
+            {
+                <tr class="mt-5">
+                    <td></td>
+                    <td><button class="btn btn-outline-primary w-100" @onclick=Email>E-Mail senden</button></td>
+                    <td></td>
+                </tr>
+
+                @foreach (Property property in project.Properties)
+                {
+                    <tr class="mt-5">
+                        <td>@property.ID</td>
+                        <td><a class="btn w-100 btn-light" href="/project/@project.ID/@property.ID">@($"{property.StreetName} {property.HouseNumber}/{property.Vl}")</a></td>
+                        <td><button class="btn btn-light" @onclick="() => Delete(property.ID)"><span class="oi oi-trash h6"></span></button></td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
 </div>
 
-<div class="container fixed-bottom">
-    <a class="btn btn-primary">Neues Lokal hinzufügen</a>
+<div class="container">
+    <a class="btn btn-primary w-50 mx-auto mb-2 fixed-bottom d-block z-index-2" href="/project/@project.ID/newproperty">
+        <span class="oi oi-plus h6"></span>
+    </a>
 </div>
-
 
 
 @code {
     [Parameter]
-    public string projectName { get; set; }
+    public string projectId { get; set; }
 
     Project project;
 
     protected override async Task OnInitializedAsync()
     {
-        project = GlobalVars.projects.FirstOrDefault(p => p.Name == projectName);
+        project = GlobalVars.Projects.FirstOrDefault(p => p.ID == Convert.ToInt32(projectId));
         GlobalVars.CurrentProject = project;
         await base.OnInitializedAsync();
+    }
+
+    void Delete(int Id)
+    {
+        project = GlobalVars.RemoveProperty(project, Id);
+
+        StateHasChanged();
+    }
+
+    void SendEmail()
+    {
+        Project temp = project;
+
+        StringBuilder builder = new StringBuilder();
+        EmailService emailService = new EmailService();
+
+        foreach(Property prop in temp.Properties)
+        {
+            builder.AppendLine($"{prop.PostalCode};{prop.StreetName};{prop.Vl};{prop.Info};{prop.Comment};{prop.Status}");
+        }
+
+        emailService.SendEmail(GlobalVars.GetSettings().Email, builder.ToString());
+    }
+
+    void Email() 
+    {
+        Task.Run(() => SendEmail());
     }
 }

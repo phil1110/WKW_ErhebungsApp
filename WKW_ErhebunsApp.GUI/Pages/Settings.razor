@@ -1,0 +1,31 @@
+﻿@page "/settings"
+@using WKW_ErhebunsApp.GUI.Data
+
+<div class="container w-100">
+    <div class="container d-inline-block mx-auto mt-3">
+        <label for="email" class="fw-bold d-block text-center">E-Mail Adresse</label>
+        <InputText @bind-Value=email class="d-block mx-auto w-50 mt-1" id="email"></InputText>
+    </div>
+
+    <div class="container">
+        <button type="submit" class="btn btn-primary w-50 mx-auto mb-2 fixed-bottom d-block" @onclick=Save>Speichern</button>
+    </div>
+</div>
+
+@code {
+    string email { get; set; }
+
+    void Save()
+    {
+        GlobalVars.SetEmail(email);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        email = GlobalVars.GetSettings().Email;
+
+        StateHasChanged();
+
+        await base.OnInitializedAsync();
+    }
+}

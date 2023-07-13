@@ -18,22 +18,13 @@
 
     <div class="container mb-5">
         <div class="row">
-            <button type="submit" class="btn btn-primary w-50 mx-auto mb-5 mt-auto" >Hier clicken!</button>
-            <a href="/projects" class="btn">Link</a>
+            <a href="/projects" class="btn btn-primary w-50 mx-auto mb-5 mt-auto">Link</a>
+            <a href="/settings" class="btn">Einstellungen</a>
         </div>
     </div>
 </div>
 
 @code {
-    /*
-    string name;
-
-    async void temp()
-        {
-        name = await Application.Current.MainPage.DisplayPromptAsync("Name", "Geben Sie Ihren Namen ein.");
-        StateHasChanged();
-    }*/
-
     protected override async Task OnInitializedAsync()
     {
         GlobalVars.Initialize();

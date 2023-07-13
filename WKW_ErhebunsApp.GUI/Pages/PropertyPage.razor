@@ -1,0 +1,92 @@
+﻿@page "/project/{projectId}/{propertyId}"
+@using WKW_ErhebunsApp.GUI.Data
+@inject IJSRuntime JSRuntime
+
+<div class="container w-100" id="form">
+	<div class="container d-inline-block mx-auto mt-3">
+		<label for="name" class="fw-bold d-block text-center">Postleitzahl</label>
+		<InputText id="name" class="d-block mx-auto w-50 mt-1" @bind-Value="Plz"></InputText>
+	</div>
+
+	<div class="container d-inline-block mx-auto mt-3">
+		<label for="name" class="fw-bold d-block text-center">Straße</label>
+		<InputText id="name" class="d-block mx-auto w-50 mt-1" @bind-Value="Street"></InputText>
+	</div>
+
+	<div class="container d-inline-block mx-auto mt-3">
+		<label for="name" class="fw-bold d-block text-center">Hausnummer</label>
+		<InputText id="name" class="d-block mx-auto w-50 mt-1" @bind-Value="Housenumber"></InputText>
+	</div>
+
+	<div class="container d-inline-block mx-auto mt-3">
+		<label for="name" class="fw-bold d-block text-center">Von Links</label>
+		<InputText id="name" class="d-block mx-auto w-50 mt-1" @bind-Value="Vl"></InputText>
+	</div>
+
+	<div class="container d-inline-block mx-auto mt-3">
+		<label for="name" class="fw-bold d-block text-center">Info</label>
+		<InputText id="name" class="d-block mx-auto w-50 mt-1" @bind-Value="Info"></InputText>
+	</div>
+
+	<div class="container d-inline-block mx-auto mt-3">
+		<label for="name" class="fw-bold d-block text-center">Anmerkung</label>
+		<InputText id="name" class="d-block mx-auto w-50 mt-1" @bind-Value="Comment"></InputText>
+	</div>
+
+	<div class="container d-inline-block mx-auto mt-3">
+		<label for="name" class="fw-bold d-block text-center">Status</label>
+		<InputText id="name" class="d-block mx-auto w-50 mt-1" @bind-Value="Status"></InputText>
+	</div>
+
+	<div class="container">
+		<button type="submit" class="btn btn-primary w-50 mx-auto mb-2 fixed-bottom d-block" @onclick=Save>Änderungen speichern</button>
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public string projectId { get; set; }
+
+	[Parameter]
+	public string propertyId { get; set; }
+
+	Project project;
+	Property property;
+
+	string Plz { get; set; }
+	string Street { get; set; }
+	string Housenumber { get; set; }
+	string Vl { get; set; }
+	string Info { get; set; }
+	string Comment { get; set; }
+	string Status { get; set; }
+
+	async void Save()
+	{
+		if (Plz != null && Street != null && Housenumber != null)
+		{
+			int id = property.ID;
+			property = new Property(GlobalVars.GetPropertyId(project), Plz, Street, Housenumber, Vl, Info, Comment, Status);
+
+			property = GlobalVars.EditProperty(project, property, id);
+		}
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		project = GlobalVars.Projects.FirstOrDefault(p => p.ID == Convert.ToInt32(projectId));
+		property = project.Properties.FirstOrDefault(p => p.ID == Convert.ToInt32(propertyId));
+
+		Plz = property.PostalCode;
+		Street = property.StreetName;
+		Housenumber = property.HouseNumber;
+		Vl = property.Vl;
+		Info = property.Info;
+		Comment = property.Comment;
+		Status = property.Status;
+
+		StateHasChanged();
+
+		await base.OnInitializedAsync();
+	}
+}

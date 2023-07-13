@@ -11,21 +11,22 @@
             </tr>
         </thead>
         <tbody>
-            @if(GlobalVars.projects == null || GlobalVars.projects.Count() == 0)
+            @if (GlobalVars.Projects == null || GlobalVars.Projects.Count() == 0)
             {
                 <tr>
-                    <td>@GetRowNumber()</td>
+                    <td>1</td>
                     <td><p>Es bestehen keine Projekte</p></td>
+                    <td><p></p></td>
                 </tr>
             }
             else
             {
-                @foreach (Project project in GlobalVars.projects)
+                @foreach (Project project in GlobalVars.Projects)
                 {
                     <tr class="mt-5">
-                        <td>@GetRowNumber()</td>
-                        <td><a href="/project/@project.Name">@project.Name</a></td>
-                        <td><button class="btn btn-light" @onclick="() => Delete(project.Name)"><span class="oi oi-trash h6"></span></button></td>
+                        <td>@project.ID</td>
+                        <td><a class="btn w-100 btn-light" href="/project/@project.ID">@project.Name</a></td>
+                        <td><button class="btn btn-light" @onclick="() => Delete(project.ID)"><span class="oi oi-trash h6"></span></button></td>
                     </tr>
                 }
             }
@@ -34,24 +35,14 @@
 </div>
 
 <div class="container">
-    <a class="btn btn-primary w-50 mx-auto mb-5 mt-auto" href="/projects/create">Neues Projekt anlegen</a>
+    <a class="btn btn-primary w-50 mx-auto mb-2 fixed-bottom d-block" href="/projects/create">Neues Projekt anlegen</a>
 </div>
 
 @code {
-    int currentRow = 1;
-
-    int GetRowNumber()
+    void Delete(int id)
     {
-        int temp = currentRow;
-        currentRow++;
-        return temp;
-    }
-
-    void Delete(string name)
-    {
-        Project temp = GlobalVars.projects.FirstOrDefault(p => p.Name == name);
-        GlobalVars.Remove(temp);
-        currentRow = 1;
+        Project temp = GlobalVars.Projects.FirstOrDefault(p => p.ID == id);
+        GlobalVars.RemoveProject(temp);
         StateHasChanged();
     }
 }

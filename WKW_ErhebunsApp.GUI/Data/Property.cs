@@ -15,7 +15,7 @@ namespace WKW_ErhebunsApp.GUI.Data
         string _vl;
         string _info;
         string _comment;
-        CurrentStatus _status;
+        string _status;
 
         #region Properties
         public int ID
@@ -58,7 +58,7 @@ namespace WKW_ErhebunsApp.GUI.Data
             set { _comment = value; }
             get { return _comment; }
         }
-        public CurrentStatus Status
+        public string Status
         {
             set { _status = value; }
             get { return _status; }
@@ -67,7 +67,7 @@ namespace WKW_ErhebunsApp.GUI.Data
 
         public Property(int id, string postalCode, string streetName, string houseNumber,
             string vl, string info, string comment,
-            CurrentStatus status = CurrentStatus.keine_Info)
+			string status)
         {
             _id = id;
             _postalCode = postalCode;

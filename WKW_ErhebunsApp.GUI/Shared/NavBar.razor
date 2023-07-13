@@ -1,0 +1,32 @@
+﻿@inject NavigationManager NavManager
+@inject IJSRuntime JSRuntime
+
+<div class="container d-block fixed-bottom mb-2 w-100" style="pointer-events:none;">
+    <a class="btn btn-outline-primary float-start" style="width:15%; pointer-events:auto;" @onclick=Home>
+        <span class="oi oi-home h-6"></span>
+    </a>
+
+    <a class="btn btn-outline-primary float-end" style="width:15%; pointer-events:auto;" @onclick=GoBack>
+        <span class="oi oi-arrow-left h-6"></span>
+    </a>
+</div>
+
+@code {
+    void Home()
+    {
+        NavManager.NavigateTo("/");
+    }
+
+    async void GoBack()
+    {
+        string path = NavManager.Uri;
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("history.back");
+        }
+        catch
+        {
+            NavManager.NavigateTo(path);
+        }
+    }
+}

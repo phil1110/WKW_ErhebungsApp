@@ -9,12 +9,19 @@ namespace WKW_ErhebunsApp.GUI.Data
 {
     public class Project
     {
+        int _id;
         string _name;
         private List<Property> _properties = new List<Property>();
 
-        public Project(string name)
+        public Project(int id, string name)
         {
+            _id = id;
             _name = name;
+        }
+
+        public int ID
+        {
+            get { return _id; }
         }
 
         public string Name
