@@ -77,7 +77,7 @@
 
         foreach(Property prop in temp.Properties)
         {
-            builder.AppendLine($"{prop.PostalCode};{prop.StreetName};{prop.Vl};{prop.Info};{prop.Comment};{prop.Status}");
+            builder.AppendLine($"{prop.PostalCode};{prop.StreetName};{prop.HouseNumber};{prop.Vl};{prop.Info};{prop.Comment};{prop.Status}<br>");
         }
 
         emailService.SendEmail(GlobalVars.GetSettings().Email, builder.ToString());
