@@ -5,6 +5,7 @@
 }
 
 main {
+    scrollbar-width: none;
     flex: 1;
 }
 
@@ -72,4 +73,13 @@ main {
         padding-left: 2rem !important;
         padding-right: 1.5rem !important;
     }
+}
+
+.contain-overflow{
+    overflow-y: scroll;
+}
+
+article{
+    height: 90vh !important;
+    overflow-y: scroll !important;
 }

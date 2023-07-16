@@ -19,6 +19,8 @@ namespace WKW_ErhebunsApp.GUI.Data
 
         public static string LastPlzEntered { get; set; }
 
+        public static string LastHouseNumberEntered { get; set; }
+
         public static void Initialize()
         {
             if (!_initialized)
